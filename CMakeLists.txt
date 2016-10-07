@@ -3,7 +3,4 @@ project(ft_ls)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES
-    README.md)
-
-add_executable(ft_ls ${SOURCE_FILES})
+add_custom_target(test_makefile ALL COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
