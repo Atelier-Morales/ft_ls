@@ -12,16 +12,24 @@
 #include <locale.h>
 #include <langinfo.h>
 #include <stdint.h>
+#include <stdio.h>
 
 void display_basic_entries(char *dir)
 {
     struct dirent   *dp;
+    struct stat     statbuf;
     DIR             *dirp;
 
     dirp = opendir(dir);
     while ((dp = readdir(dirp)) != NULL)
     {
+        /* Get entry's information. */
+        if (stat(dp->d_name, &statbuf) == -1)
+            continue;
+
         if (dp->d_name[0] != '.') {
+            ft_putnbr(statbuf.st_mode);
+            ft_putstr(" ");
             ft_putstr(dp->d_name);
             ft_putstr("  ");
         }
