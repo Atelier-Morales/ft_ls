@@ -11,6 +11,12 @@
 # **************************************************************************** #
 
 SRC = 	main.c \
+        display_dir_entries.c \
+        sanitize_standard_input.c \
+        check_errors.c \
+        set_directory_structure.c \
+        array_functions.c \
+        iterative_display_mode.c
 
 DIR = srcs/
 LIB = libft/
@@ -18,6 +24,12 @@ HEADER = includes/
 FLAGS = -Wall -Wextra -Werror -g
 OBJ = $(SRC:.c=.o)
 NAME = ft_ls
+TEST_FILE = test_ls.c
+
+test_all: re test
+
+test:
+	gcc $(TEST_FILE) -o tests && ./tests
 
 all: $(NAME)
 
