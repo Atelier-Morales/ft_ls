@@ -12,19 +12,34 @@
 #include <locale.h>
 #include <langinfo.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-void        display_dir_entries(char *dir)
+void        display_dir_entries(char *dir, char options[6])
 {
-    char    **directory;
+    t_dir   *directory;
+    t_dir   *temp;
     int     k;
 
     k = 0;
-    directory = set_directory_structure(dir);
-
-    ft_arr_sort(directory, sort_strcmp, 0);
-    while (k < ft_tabcount(directory))
+    directory = (t_dir *)malloc(sizeof(t_dir));
+    directory->name = NULL;
+    directory->next = NULL;
+    directory = set_directory_structure(dir, directory, options);
+    if (ft_strchr(options, 'r') == NULL)
+        sort_list(directory, 1);
+    else
+        sort_list(directory, 0);
+    temp = NULL;
+    temp = directory;
+    while (temp->next != NULL)
     {
-        ft_putendl(directory[k]);
-        k++;
+//        ft_putendl(directory->name);
+        temp = temp->next;
     }
+
+//    while (k < ft_tabcount(directory))
+//    {
+//        ft_putendl(directory[k]);
+//        k++;
+//    }
 }

@@ -16,7 +16,8 @@ SRC = 	main.c \
         check_errors.c \
         set_directory_structure.c \
         array_functions.c \
-        iterative_display_mode.c
+        iterative_display_mode.c \
+        list_functions.c
 
 DIR = srcs/
 LIB = libft/
@@ -26,10 +27,10 @@ OBJ = $(SRC:.c=.o)
 NAME = ft_ls
 TEST_FILE = test_ls.c
 
-test_all: re test
+test_all: re clean_test test
 
 test:
-	gcc $(TEST_FILE) -o tests && ./tests
+	gcc $(TEST_FILE) -o tests
 
 all: $(NAME)
 
@@ -46,11 +47,17 @@ clean:
 	@make clean -s -C $(LIB)
 	@echo "Objects deleted"
 
-fclean: clean
+fclean: clean clean_test
 	@rm -f $(NAME)
 	@make fclean -s -C $(LIB)
 	@echo "Folder cleanup successful"
 
+clean_test:
+	@rm -f tests
+	@rm -f test/dest.txt
+	@rm -f test/org.txt
+	@rm -f test/diff
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test test_all

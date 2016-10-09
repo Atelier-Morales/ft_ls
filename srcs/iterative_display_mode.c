@@ -14,12 +14,16 @@
 #include <stdint.h>
 
 void    iterative_display_mode(char **dirs,char options[6]) {
+    int i;
+
+    i = 0;
     if (ft_strchr(options, 'r') == NULL)
         ft_arr_sort(dirs, sort_strcmp, 0);
     else
         ft_arr_sort(dirs, sort_strcmp, 1);
-    for (int i = 0; i < ft_tabcount(dirs); i++)
+    while (i < ft_tabcount(dirs))
     {
-        ft_putendl(dirs[i]);
+        display_dir_entries(dirs[i], options);
+        i++;
     }
 }

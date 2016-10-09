@@ -12,29 +12,33 @@ static void     print_option_error(char c)
     ft_putstr("usage: ls [-altrR] [file ...]");
 }
 
-int             check_errors(char option[6], char *av)
+int             check_errors(char option[6], char **av)
 {
-    size_t  i;
+    size_t         i;
+    size_t         j;
 
     i = 0;
-    if (av[0] == '-')
+    while (av[i] != NULL && av[i][0] == '-')
     {
-        i++;
-        while (i < ft_strlen(av))
+        j = 1;
+        while (j < ft_strlen(av[i]))
         {
-            if (ft_strchr("altrR", av[i]) == NULL)
+            if (ft_strchr("altrR", av[i][j]) == NULL)
             {
-                print_option_error(av[i]);
+                print_option_error(av[i][j]);
                 return (0);
             }
-            else if (ft_strchr(option, av[i]) == NULL) {
-                option[(int)ft_strlen(option)] = av[i];
+            else if (ft_strchr(option, av[i][j]) == NULL) {
+                option[(int)ft_strlen(option)] = av[i][j];
             }
-
-            i++;
+            j++;
         }
+        i++;
     }
-    else
-        return (2);
-    return (1);
+//    ft_putstr("number of options = ");
+//    ft_putnbr(i);
+//    ft_putchar('\n');
+//    for (int k = 0; k < 6; k++)
+//        ft_putchar(option[k]);
+    return (i);
 }

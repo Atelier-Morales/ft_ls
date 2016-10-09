@@ -6,12 +6,14 @@
 
 int main(int ac, char **av)
 {
+    char        options[6];
+
+    ft_bzero(options, 6);
     if (ac == 1) {
-        display_dir_entries(".");
+        display_dir_entries(".", options);
     }
     else
-        sanitize_standard_input(++av);
-    ft_putstr("\n");
+        sanitize_standard_input(++av, ac, options);
     (void)av;
     return (0);
 }
