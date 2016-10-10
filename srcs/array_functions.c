@@ -4,6 +4,21 @@
 
 #include "../includes/ft_ls.h"
 
+char        *lower_str(char *s)
+{
+    char    *buf;
+    size_t     i;
+
+    buf = ft_strdup(s);
+    i = 0;
+    while (i < ft_strlen(buf))
+    {
+        buf[i] = ft_tolower(s[i]);
+        i++;
+    }
+    return buf;
+}
+
 void ft_arr_swap(void *arr_, int i, int j)
 {
     void **arr = arr_;
@@ -16,8 +31,11 @@ void ft_arr_swap(void *arr_, int i, int j)
 
 int sort_strcmp(void *s1_, void *s2_, int reverse)
 {
-    char *s1 = s1_;
-    char *s2 = s2_;
+    char *s1;
+    char *s2;
+
+    s1 = OS_MODE == 0 ? lower_str(s1_) : s1;
+    s2 = OS_MODE == 0 ? lower_str(s2_) : s2;
     if (reverse == 1)
         return (ft_strcmp(s1, s2) < 0);
     return (ft_strcmp(s1, s2) > 0);

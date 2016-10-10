@@ -26,7 +26,7 @@ int             check_errors(char option[6], char **av)
             if (ft_strchr("altrR", av[i][j]) == NULL)
             {
                 print_option_error(av[i][j]);
-                return (0);
+                return (-1);
             }
             else if (ft_strchr(option, av[i][j]) == NULL) {
                 option[(int)ft_strlen(option)] = av[i][j];
@@ -35,10 +35,5 @@ int             check_errors(char option[6], char **av)
         }
         i++;
     }
-//    ft_putstr("number of options = ");
-//    ft_putnbr(i);
-//    ft_putchar('\n');
-//    for (int k = 0; k < 6; k++)
-//        ft_putchar(option[k]);
     return (i);
 }

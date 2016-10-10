@@ -6,13 +6,11 @@
 
 int sanitize_standard_input(char **av, int ac, char options[6])
 {
-    int         i;
     int         ret;
     char        **dirs;
 
-    i = 0;
     ret = check_errors(options, av);
-    if (ret == 0)
+    if (ret == -1)
         return (0);
     dirs = ft_strtabdup(av + ret);
     if (ft_strchr(options, 'R') == NULL) {

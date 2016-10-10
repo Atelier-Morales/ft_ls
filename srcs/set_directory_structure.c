@@ -81,11 +81,10 @@ static void         add_dir(t_dir **directory, t_dir **first, char *name, int i)
     t_dir           *new_dir;
 
     new_dir = (t_dir *)malloc(sizeof(t_dir));
-    (*directory)->name = name;
+    (*directory)->name = ft_strdup(name);
     (*directory)->next = new_dir;
     if (i == 0)
         *first = *directory;
-    *directory = (*directory)->next;
 }
 
 t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[6])
@@ -97,18 +96,17 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
     t_dir           *first;
 
     i = 0;
-    dirp = opendir(dir);
+    if ((dirp = opendir(dir)) == NULL)
+        return NULL;
     first = (t_dir *)malloc(sizeof(t_dir));
     while ((dp = readdir(dirp)) != NULL)
     {
-        if (stat(dp->d_name, &statbuf) == -1)
-            continue;
+        stat(dp->d_name, &statbuf);
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
-//            ret[i] = ft_strchr(options, 'l') != NULL ? display_long_format(statbuf, dp)
-//                                                     : ft_strdup(dp->d_name);
             add_dir(&directory, &first, dp->d_name, i);
+            directory = directory->next;
             i++;
         }
     }

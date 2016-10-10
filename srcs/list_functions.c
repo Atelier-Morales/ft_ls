@@ -20,9 +20,8 @@ t_dir       *sort_list(t_dir *head, int rev)
 
     tmp = head;
     tmp_next = head->next;
-    while (tmp_next != NULL)
+    while (tmp_next->next != NULL)
     {
-        ft_putstr(" first ");
         while (tmp_next != tmp)
         {
             if (sort_strcmp(tmp_next->name, tmp->name, rev))
@@ -30,11 +29,10 @@ t_dir       *sort_list(t_dir *head, int rev)
             tmp = tmp->next;
         }
         tmp = head;
-        ft_putstr("lol = ");
+//        ft_putstr(tmp_next->name);
         tmp_next = tmp_next->next;
-        ft_putstr(" lol2 = ");
     }
-    ft_putstr(" last ");
-    ft_putendl(tmp->next->name);
+//    ft_putstr(" last ");
+//    ft_putendl(tmp->next->name);
     return tmp ;
 }

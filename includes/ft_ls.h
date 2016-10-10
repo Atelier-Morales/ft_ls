@@ -8,6 +8,8 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
+#define OS_MODE 0
+
 typedef struct		s_node
 {
 	int             key;
@@ -30,5 +32,6 @@ void                ft_arr_swap(void *arr_, int i, int j);
 void                iterative_display_mode(char **dirs, char options[6]);
 t_dir               *sort_list(t_dir *head, int rev);
 void                ft_list_swap(t_dir **tmp, t_dir **tmp_next);
+char        		*lower_str(char *s);
 
 #endif
