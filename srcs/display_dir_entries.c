@@ -5,6 +5,24 @@
 #include "../includes/ft_ls.h"
 #include <stdlib.h>
 
+static void display_dir(t_dir *dir, char options[6])
+{
+    char            *long_format;
+
+    long_format = ft_strchr(options, 'l');
+
+    if (long_format != NULL)
+    {
+        ft_putstr(dir->perms);
+        ft_putstr("+ ");
+        ft_putnbr(dir->st_nlink);
+        ft_putstr(" ");
+        ft_putstr(dir->pw_name);
+        ft_putstr(" ");
+    }
+    ft_putendl(dir->name);
+}
+
 void        display_dir_entries(char *dir, char options[6])
 {
     t_dir   *directory;
@@ -21,7 +39,7 @@ void        display_dir_entries(char *dir, char options[6])
         sort_list(directory, 0);
     while (directory->next != NULL)
     {
-        ft_putendl(directory->name);
+        display_dir(directory, options);
         directory = directory->next;
     }
 }

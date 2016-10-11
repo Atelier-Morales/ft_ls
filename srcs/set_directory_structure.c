@@ -76,15 +76,81 @@
 //    return (NULL);
 //}
 
-static void         add_dir(t_dir **directory, t_dir **first, char *name, int i)
+static char         *set_pw_name(struct stat st)
+{
+    struct passwd   *pwd;
+    char            *owner;
+
+    if ((pwd = getpwuid(st.st_uid)) != NULL)
+        owner = ft_strdup(pwd->pw_name);
+    else
+        owner = ft_strdup(ft_itoa(st.st_uid));
+    return (owner);
+}
+
+static char         *set_dir_perms(struct stat st)
+{
+    char            *perms;
+
+    perms = ft_strdup("----------");
+    perms[0] = S_ISDIR(st.st_mode) ? 'd' : '-';
+    perms[1] = st.st_mode & S_IRUSR ? 'r' : '-';
+    perms[2] = st.st_mode & S_IWUSR ? 'w' : '-';
+    perms[3] = st.st_mode & S_IXUSR ? 'x' : '-';
+    perms[4] = st.st_mode & S_IRGRP ? 'r' : '-';
+    perms[5] = st.st_mode & S_IWGRP ? 'w' : '-';
+    perms[6] = st.st_mode & S_IXGRP ? 'x' : '-';
+    perms[7] = st.st_mode & S_IROTH ? 'r' : '-';
+    perms[8] = st.st_mode & S_IWOTH ? 'w' : '-';
+    perms[9] = st.st_mode & S_IXOTH ? 'x' : '-';
+    return perms;
+}
+
+static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
 {
     t_dir           *new_dir;
+    char            *long_format;
 
     new_dir = (t_dir *)malloc(sizeof(t_dir));
-    (*directory)->name = ft_strdup(name);
-    (*directory)->next = new_dir;
-    if (i == 0)
-        *first = *directory;
+    (*dir)->name = ft_strdup(n);
+    long_format = ft_strchr(opt, 'l');
+    (*dir)->st_mode = long_format != NULL ? st.st_mode : 0;
+    (*dir)->perms = long_format != NULL ? ft_strdup(set_dir_perms(st)) : NULL;
+    (*dir)->st_nlink = long_format != NULL ? st.st_nlink : 0;
+    (*dir)->pw_name = long_format != NULL ? set_pw_name(st) : NULL;
+    (*dir)->next = new_dir;
+
+//    /* Print out type, permissions, and number of links. */
+//    printf("%10.10s", sperm (statbuf.st_mode));
+//    printf("%4d", statbuf.st_nlink);
+//
+//
+//    /* Print out owner's name if it is found using getpwuid(). */
+//    if ((pwd = getpwuid(statbuf.st_uid)) != NULL)
+//        printf(" %-8.8s", pwd->pw_name);
+//    else
+//        printf(" %-8d", statbuf.st_uid);
+//
+//
+//    /* Print out group name if it is found using getgrgid(). */
+//    if ((grp = getgrgid(statbuf.st_gid)) != NULL)
+//        printf(" %-8.8s", grp->gr_name);
+//    else
+//        printf(" %-8d", statbuf.st_gid);
+//
+//
+//    /* Print size of file. */
+//    printf(" %9jd", (intmax_t)statbuf.st_size);
+//
+//
+//    tm = localtime(&statbuf.st_mtime);
+//
+//
+//    /* Get localized date string. */
+//    strftime(datestring, sizeof(datestring), nl_langinfo(D_T_FMT), tm);
+//
+//
+//    printf(" %s %s\n", datestring, dp->d_name);
 }
 
 t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[6])
@@ -105,7 +171,8 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
-            add_dir(&directory, &first, dp->d_name, i);
+            add_dir(&directory, dp->d_name, statbuf, options);
+            first = i == 0 ? directory : first;
             directory = directory->next;
             i++;
         }

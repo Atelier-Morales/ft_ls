@@ -31,7 +31,6 @@ int countlines(char *filename)
 
 int main(void)
 {
-
     printf("\nTests with single option : \n");
     // test single ls
     printf("[TEST] : single ls\n");
@@ -81,6 +80,55 @@ int main(void)
     printf("[TEST] : ls -a -r in . folder\n");
     system("ls -a -r > test/org.txt");
     system("./ft_ls -a -r > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test single ls with multiple folders
+    printf("[TEST] : single ls with multiple folders\n");
+    system("ls test includes srcs libft > test/org.txt");
+    system("./ft_ls test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -a with multiple folders
+    printf("[TEST] : ls -a with multiple folders\n");
+    system("ls -a test includes srcs libft > test/org.txt");
+    system("./ft_ls -a test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -r with multiple folders
+    printf("[TEST] : ls -r with multiple folders\n");
+    system("ls -r test includes srcs libft > test/org.txt");
+    system("./ft_ls -r test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -ar with multiple folders
+    printf("[TEST] : ls -ar with multiple folders\n");
+    system("ls -ar test includes srcs libft > test/org.txt");
+    system("./ft_ls -ar test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -ra with multiple folders
+    printf("[TEST] : ls -ra with multiple folders\n");
+    system("ls -ra test includes srcs libft > test/org.txt");
+    system("./ft_ls -ra test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -a -r with multiple folders
+    printf("[TEST] : ls -a -r with multiple folders\n");
+    system("ls -a -r test includes srcs libft > test/org.txt");
+    system("./ft_ls -a -r test includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -r -a with multiple folders
+    printf("[TEST] : ls -r -a with multiple folders\n");
+    system("ls -r -a test includes srcs libft > test/org.txt");
+    system("./ft_ls -r -a test includes srcs libft > test/dest.txt");
     system("diff test/org.txt test/dest.txt > test/diff");
     assert(countlines("test/diff") <= 1);
 

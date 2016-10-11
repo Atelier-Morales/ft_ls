@@ -19,6 +19,10 @@ typedef struct		s_node
 
 typedef struct      s_dir {
     char            *name;
+    int             st_mode;
+    int             st_nlink;
+    char            *pw_name;
+    char            *perms;
     struct s_dir    *next;
 }                   t_dir;
 
