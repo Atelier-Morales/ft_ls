@@ -119,38 +119,6 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     (*dir)->st_nlink = long_format != NULL ? st.st_nlink : 0;
     (*dir)->pw_name = long_format != NULL ? set_pw_name(st) : NULL;
     (*dir)->next = new_dir;
-
-//    /* Print out type, permissions, and number of links. */
-//    printf("%10.10s", sperm (statbuf.st_mode));
-//    printf("%4d", statbuf.st_nlink);
-//
-//
-//    /* Print out owner's name if it is found using getpwuid(). */
-//    if ((pwd = getpwuid(statbuf.st_uid)) != NULL)
-//        printf(" %-8.8s", pwd->pw_name);
-//    else
-//        printf(" %-8d", statbuf.st_uid);
-//
-//
-//    /* Print out group name if it is found using getgrgid(). */
-//    if ((grp = getgrgid(statbuf.st_gid)) != NULL)
-//        printf(" %-8.8s", grp->gr_name);
-//    else
-//        printf(" %-8d", statbuf.st_gid);
-//
-//
-//    /* Print size of file. */
-//    printf(" %9jd", (intmax_t)statbuf.st_size);
-//
-//
-//    tm = localtime(&statbuf.st_mtime);
-//
-//
-//    /* Get localized date string. */
-//    strftime(datestring, sizeof(datestring), nl_langinfo(D_T_FMT), tm);
-//
-//
-//    printf(" %s %s\n", datestring, dp->d_name);
 }
 
 t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[6])
@@ -160,24 +128,31 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
     struct stat     statbuf;
     int             i;
     t_dir           *first;
+    int             blocks;
 
     i = 0;
+    blocks = 0;
     if ((dirp = opendir(dir)) == NULL)
         return NULL;
     first = (t_dir *)malloc(sizeof(t_dir));
     while ((dp = readdir(dirp)) != NULL)
     {
-        stat(dp->d_name, &statbuf);
+        stat(ft_strjoin(ft_strjoin(dir, "/"), dp->d_name), &statbuf);
+
+        printf("Blocks allocated:         %lld\n",
+               (long long) statbuf.st_blocks);
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
+            blocks += (int)statbuf.st_blocks;
             add_dir(&directory, dp->d_name, statbuf, options);
             first = i == 0 ? directory : first;
             directory = directory->next;
             i++;
         }
     }
-    directory->next = NULL;
+    printf("blocks %d\n", blocks);
     closedir(dirp);
+    directory->next = NULL;
     return first;
 }

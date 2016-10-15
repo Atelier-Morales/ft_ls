@@ -8,7 +8,7 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-#define OS_MODE 0
+#define OS_MODE 1
 
 typedef struct		s_node
 {

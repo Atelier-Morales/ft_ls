@@ -14,7 +14,9 @@ static void display_dir(t_dir *dir, char options[6])
     if (long_format != NULL)
     {
         ft_putstr(dir->perms);
-        ft_putstr("+ ");
+        if (OS_MODE == 0)
+            ft_putstr("+");
+        ft_putstr("  ");
         ft_putnbr(dir->st_nlink);
         ft_putstr(" ");
         ft_putstr(dir->pw_name);
@@ -26,11 +28,13 @@ static void display_dir(t_dir *dir, char options[6])
 void        display_dir_entries(char *dir, char options[6])
 {
     t_dir   *directory;
+    t_dir   *buf;
 
     directory = (t_dir *)malloc(sizeof(t_dir));
     directory->name = NULL;
     directory->next = NULL;
-    directory = set_directory_structure(dir, directory, options);
+    buf = directory;
+    directory = set_directory_structure(dir, buf, options);
     if (directory == NULL)
         return ;
     if (ft_strchr(options, 'r') == NULL && directory->next != NULL)

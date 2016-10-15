@@ -15,33 +15,33 @@
 
 static void display_dir_errors(char **dirs)
 {
-    DIR     *dirp;
+    struct stat path_stat;
     char    *buf;
     int     i;
 
     i = 0;
     while (i < ft_tabcount(dirs))
     {
-        if ((dirp = opendir(dirs[i])) == NULL)
+        stat(dirs[i], &path_stat);
+        if (S_ISDIR(path_stat.st_mode) == 0)
         {
             buf = ft_strjoin(ft_strjoin("ls: '", dirs[i]), \
             "' : No such file or directory\n");
             ft_putstr_fd(buf, 2);
         }
-        closedir(dirp);
         i++;
     }
 }
 
 static int  check_dir(char *dir)
 {
-    DIR     *dirp;
+    struct stat path_stat;
     int     ret;
 
     ret = 1;
-    if ((dirp = opendir(dir)) == NULL)
+    stat(dir, &path_stat);
+    if (S_ISDIR(path_stat.st_mode) == 0)
         ret = 0;
-    closedir(dirp);
     return (ret);
 }
 
@@ -56,7 +56,8 @@ void    iterative_display_mode(char **dirs,char options[6]) {
     display_dir_errors(dirs);
     while (i < ft_tabcount(dirs) && check_dir(dirs[i]) != 0)
     {
-        ft_putendl(ft_strjoin(dirs[i], ":"));
+        if (ft_tabcount(dirs) > 1)
+            ft_putendl(ft_strjoin(dirs[i], ":"));
         display_dir_entries(dirs[i], options);
         if (i + 1 != ft_tabcount(dirs))
             ft_putchar('\n');

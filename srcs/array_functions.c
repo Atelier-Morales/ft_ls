@@ -34,8 +34,8 @@ int sort_strcmp(void *s1_, void *s2_, int reverse)
     char *s1;
     char *s2;
 
-    s1 = OS_MODE == 0 ? lower_str(s1_) : s1;
-    s2 = OS_MODE == 0 ? lower_str(s2_) : s2;
+    s1 = OS_MODE == 0 ? lower_str(s1_) : s1_;
+    s2 = OS_MODE == 0 ? lower_str(s2_) : s2_;
     if (reverse == 1)
         return (ft_strcmp(s1, s2) < 0);
     return (ft_strcmp(s1, s2) > 0);
