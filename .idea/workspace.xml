@@ -13,14 +13,7 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3863dce2-4db3-4f6a-ac73-54616904c477" name="Default" comment="implemented array sorting for reverse option, option handling is functional">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/ft_ls.h" afterPath="$PROJECT_DIR$/includes/ft_ls.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/array_functions.c" afterPath="$PROJECT_DIR$/srcs/array_functions.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/display_dir_entries.c" afterPath="$PROJECT_DIR$/srcs/display_dir_entries.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/iterative_display_mode.c" afterPath="$PROJECT_DIR$/srcs/iterative_display_mode.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/set_directory_structure.c" afterPath="$PROJECT_DIR$/srcs/set_directory_structure.c" />
-    </list>
+    <list default="true" id="3863dce2-4db3-4f6a-ac73-54616904c477" name="Default" comment="implemented array sorting for reverse option, option handling is functional" />
     <ignored path="ft_ls.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -94,8 +87,8 @@
           <file leaf-file-name="set_directory_structure.c" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/srcs/set_directory_structure.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1172">
-                  <caret line="157" column="1" selection-start-line="157" selection-start-column="1" selection-end-line="157" selection-end-column="1" />
+                <state relative-caret-position="962">
+                  <caret line="147" column="62" selection-start-line="147" selection-start-column="62" selection-end-line="147" selection-end-column="62" />
                   <folding />
                 </state>
               </provider>
@@ -524,7 +517,7 @@
       <workItem from="1475922484611" duration="16141000" />
       <workItem from="1476013110575" duration="16019000" />
       <workItem from="1476051300079" duration="13047000" />
-      <workItem from="1476536703237" duration="3587000" />
+      <workItem from="1476536703237" duration="3757000" />
     </task>
     <task id="LOCAL-00001" summary="implemented array sorting for reverse option, option handling is functional">
       <created>1475942499193</created>
@@ -537,7 +530,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58361000" />
+    <option name="totallyTimeSpent" value="58531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -895,8 +888,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/srcs/set_directory_structure.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1172">
-          <caret line="157" column="1" selection-start-line="157" selection-start-column="1" selection-end-line="157" selection-end-column="1" />
+        <state relative-caret-position="962">
+          <caret line="147" column="62" selection-start-line="147" selection-start-column="62" selection-end-line="147" selection-end-column="62" />
           <folding />
         </state>
       </provider>
