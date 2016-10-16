@@ -4,13 +4,46 @@
 
 #include "../includes/ft_ls.h"
 
-void ft_list_swap(t_dir **tmp, t_dir **tmp_next)
+void        ft_list_swap(t_dir **tmp, t_dir **tmp_next)
 {
-    void *buf;
+    void    *buf;
+    int     swap;
 
     buf = (*tmp)->name;
     (*tmp)->name = (*tmp_next)->name;
     (*tmp_next)->name = buf;
+
+    swap = (*tmp)->st_mode;
+    (*tmp)->st_mode = (*tmp_next)->st_mode;
+    (*tmp_next)->st_mode = swap;
+
+    buf = (*tmp)->perms;
+    (*tmp)->perms = (*tmp_next)->perms;
+    (*tmp_next)->perms = buf;
+
+    swap = (*tmp)->st_nlink;
+    (*tmp)->st_nlink = (*tmp_next)->st_nlink;
+    (*tmp_next)->st_nlink = swap;
+
+    buf = (*tmp)->pw_name;
+    (*tmp)->pw_name = (*tmp_next)->pw_name;
+    (*tmp_next)->pw_name = buf;
+
+    buf = (*tmp)->gr_name;
+    (*tmp)->gr_name = (*tmp_next)->gr_name;
+    (*tmp_next)->gr_name = buf;
+
+    swap = (*tmp)->st_size;
+    (*tmp)->st_size = (*tmp_next)->st_size;
+    (*tmp_next)->st_size = swap;
+
+    buf = (*tmp)->time;
+    (*tmp)->time = (*tmp_next)->time;
+    (*tmp_next)->time = buf;
+
+    swap = (*tmp)->blocks;
+    (*tmp)->blocks = (*tmp_next)->blocks;
+    (*tmp_next)->blocks = swap;
 }
 
 t_dir       *sort_list(t_dir *head, int rev)

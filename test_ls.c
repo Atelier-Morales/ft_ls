@@ -31,6 +31,8 @@ int countlines(char *filename)
 
 int main(void)
 {
+    printf("\ncreating test directory\n");
+    system("mkdir test");
     printf("\nTests with single option : \n");
     // test single ls
     printf("[TEST] : single ls\n");
@@ -80,6 +82,13 @@ int main(void)
     printf("[TEST] : ls -a -r in . folder\n");
     system("ls -a -r > test/org.txt");
     system("./ft_ls -a -r > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -l in . folder
+    printf("[TEST] : ls -l in . folder\n");
+    system("ls -l > test/org.txt");
+    system("./ft_ls -l > test/dest.txt");
     system("diff test/org.txt test/dest.txt > test/diff");
     assert(countlines("test/diff") <= 1);
 

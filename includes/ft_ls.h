@@ -8,7 +8,7 @@
 # include <sys/stat.h>
 # include <dirent.h>
 
-#define OS_MODE 1
+#define OS_MODE 0
 
 typedef struct		s_node
 {
@@ -22,7 +22,11 @@ typedef struct      s_dir {
     int             st_mode;
     int             st_nlink;
     char            *pw_name;
+    char            *gr_name;
     char            *perms;
+    int             st_size;
+    int             blocks;
+    char            *time;
     struct s_dir    *next;
 }                   t_dir;
 

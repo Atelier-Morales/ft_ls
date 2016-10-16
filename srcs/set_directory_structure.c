@@ -15,67 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//static int  get_dir_len(char *dir, char options[6])
-//{
-//    DIR             *dirp;
-//    struct dirent   *dp1;
-//    struct stat     statbuf2;
-//    int             len;
-//
-//    len = 0;
-//    dirp = opendir(dir);
-//    while ((dp1 = readdir(dirp)) != NULL)
-//    {
-//        if (stat(dp1->d_name, &statbuf2) == -1)
-//            continue ;
-//        if ((ft_strchr(options, 'a') != NULL && dp1->d_name[0] == '.')
-//            || dp1->d_name[0] != '.')
-//            len++;
-//    }
-//    closedir(dirp);
-//    return (len);
-//}
-
-//static char        *display_long_format(struct stat statbuf, struct dirent   *dp)
-//{
-//    struct passwd  *pwd;
-//    struct group   *grp;
-//    struct tm      *tm;
-//    char            datestring[256];
-//
-//    /* Print out type, permissions, and number of links. */
-//    printf("%9jd", (intmax_t)statbuf.st_mode);
-//    printf("%4d", statbuf.st_nlink);
-//
-//
-//    /* Print out owner's name if it is found using getpwuid(). */
-//    if ((pwd = getpwuid(statbuf.st_uid)) != NULL)
-//        printf(" %-8.8s ", pwd->pw_name);
-//    else
-//        printf(" %-8d ", statbuf.st_uid);
-//
-//
-//    /* Print out group name if it is found using getgrgid(). */
-//    if ((grp = getgrgid(statbuf.st_gid)) != NULL)
-//        printf(" %s ", grp->gr_name);
-//    else
-//        printf(" %d ", statbuf.st_gid);
-//
-//    /* Print size of file. */
-//    printf(" %5jd", (intmax_t)statbuf.st_size);
-//
-//
-//    tm = localtime(&statbuf.st_mtime);
-//
-//
-//    /* Get localized date string. */
-//    strftime(datestring, sizeof(datestring), nl_langinfo(D_T_FMT), tm);
-//
-//
-//    printf(" %s %s\n", datestring, dp->d_name);
-//    return (NULL);
-//}
-
 static char         *set_pw_name(struct stat st)
 {
     struct passwd   *pwd;
@@ -86,6 +25,29 @@ static char         *set_pw_name(struct stat st)
     else
         owner = ft_strdup(ft_itoa(st.st_uid));
     return (owner);
+}
+
+static char         *set_gr_name(struct stat st)
+{
+    struct group    *grp;
+    char            *group;
+
+    if ((grp = getgrgid(st.st_gid)) != NULL)
+        group = ft_strdup(grp->gr_name);
+    else
+        group = ft_itoa(st.st_gid);
+    return (group);
+}
+
+static char         *set_time(struct stat st)
+{
+    struct tm       *tm;
+    char            *datestring;
+
+    tm = localtime(&st.st_mtime);
+    datestring = ft_strnew(256);
+    strftime(datestring, 256, nl_langinfo(D_T_FMT), tm);
+    return datestring;
 }
 
 static char         *set_dir_perms(struct stat st)
@@ -118,6 +80,10 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     (*dir)->perms = long_format != NULL ? ft_strdup(set_dir_perms(st)) : NULL;
     (*dir)->st_nlink = long_format != NULL ? st.st_nlink : 0;
     (*dir)->pw_name = long_format != NULL ? set_pw_name(st) : NULL;
+    (*dir)->gr_name = long_format != NULL ? set_gr_name(st) : NULL;
+    (*dir)->st_size = long_format != NULL ? (int)st.st_size : 0;
+    (*dir)->time = long_format != NULL ? set_time(st): NULL;
+    (*dir)->blocks = long_format != NULL ? (int)st.st_blocks : 0;
     (*dir)->next = new_dir;
 }
 
@@ -138,20 +104,17 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
     while ((dp = readdir(dirp)) != NULL)
     {
         stat(ft_strjoin(ft_strjoin(dir, "/"), dp->d_name), &statbuf);
-
-        printf("Blocks allocated:         %lld\n",
-               (long long) statbuf.st_blocks);
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
             blocks += (int)statbuf.st_blocks;
+
             add_dir(&directory, dp->d_name, statbuf, options);
             first = i == 0 ? directory : first;
             directory = directory->next;
             i++;
         }
     }
-    printf("blocks %d\n", blocks);
     closedir(dirp);
     directory->next = NULL;
     return first;
