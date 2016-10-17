@@ -43,5 +43,6 @@ t_dir               *sort_list(t_dir *head, int rev);
 t_dir               *sort_list_time(t_dir *head, int rev);
 void                ft_list_swap(t_dir **tmp, t_dir **tmp_next);
 char        		*lower_str(char *s);
+int                 sort_time(long t1, long t2, int reverse);
 
 #endif

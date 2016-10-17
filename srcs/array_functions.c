@@ -29,10 +29,10 @@ void ft_arr_swap(void *arr_, int i, int j)
     arr[j] = tmp;
 }
 
-int sort_strcmp(void *s1_, void *s2_, int reverse)
+int         sort_strcmp(void *s1_, void *s2_, int reverse)
 {
-    char *s1;
-    char *s2;
+    char    *s1;
+    char    *s2;
 
     s1 = OS_MODE == 0 ? lower_str(s1_) : s1_;
     s2 = OS_MODE == 0 ? lower_str(s2_) : s2_;
@@ -41,7 +41,14 @@ int sort_strcmp(void *s1_, void *s2_, int reverse)
     return (ft_strcmp(s1, s2) > 0);
 }
 
-void ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int rev), int reverse)
+int         sort_time(long t1, long t2, int reverse)
+{
+    if (reverse == 1)
+        return (int)((t1 - t2) < 0);
+    return (int)((t1 - t2) > 0);
+}
+
+void        ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int rev), int reverse)
 {
     void **arr = arr_;
     int i;
