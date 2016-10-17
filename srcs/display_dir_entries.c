@@ -71,7 +71,11 @@ static void display_dir(t_dir *dir, char options[6], int max_len)
         display_time(dir->time);
         ft_putstr(" ");
     }
+    ft_putstr(" ");
+    ft_putstr(ft_itoa((int)dir->st_mtimespec));
+    ft_putstr(" ");
     ft_putendl(dir->name);
+
 }
 
 void        display_dir_entries(char *dir, char options[6])

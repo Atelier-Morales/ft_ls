@@ -92,6 +92,76 @@ int main(void)
     system("diff test/org.txt test/dest.txt > test/diff");
     assert(countlines("test/diff") <= 1);
 
+    // test ls -l -a in . folder
+    printf("[TEST] : ls -l -a in . folder\n");
+    system("ls -l -a > test/org.txt");
+    system("./ft_ls -l -a > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -a -l in . folder
+    printf("[TEST] : ls -a -l in . folder\n");
+    system("ls -a -l > test/org.txt");
+    system("./ft_ls -a -l > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -la in . folder
+    printf("[TEST] : ls -la in . folder\n");
+    system("ls -la > test/org.txt");
+    system("./ft_ls -la > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -al in . folder
+    printf("[TEST] : ls -al in . folder\n");
+    system("ls -al > test/org.txt");
+    system("./ft_ls -al > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -l -r in . folder
+    printf("[TEST] : ls -l -r in . folder\n");
+    system("ls -l -r > test/org.txt");
+    system("./ft_ls -l -r > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -r -l in . folder
+    printf("[TEST] : ls -r -l in . folder\n");
+    system("ls -r -l > test/org.txt");
+    system("./ft_ls -r -l > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -lr in . folder
+    printf("[TEST] : ls -lr in . folder\n");
+    system("ls -lr > test/org.txt");
+    system("./ft_ls -lr > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -rl in . folder
+    printf("[TEST] : ls -rl in . folder\n");
+    system("ls -rl > test/org.txt");
+    system("./ft_ls -rl > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -alr in . folder
+    printf("[TEST] : ls -alr in . folder\n");
+    system("ls -alr > test/org.txt");
+    system("./ft_ls -alr > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -ral in . folder
+    printf("[TEST] : ls -ral in . folder\n");
+    system("ls -ral > test/org.txt");
+    system("./ft_ls -ral > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
     // test single ls with multiple folders
     printf("[TEST] : single ls with multiple folders\n");
     system("ls test includes srcs libft > test/org.txt");

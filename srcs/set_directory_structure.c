@@ -12,6 +12,7 @@
 #include <locale.h>
 #include <langinfo.h>
 #include <stdint.h>
+#include <sys/timespec.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -84,6 +85,7 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     (*dir)->st_size = long_format != NULL ? (int)st.st_size : 0;
     (*dir)->time = long_format != NULL ? set_time(st): NULL;
     (*dir)->blocks = long_format != NULL ? (int)st.st_blocks : 0;
+    (*dir)->st_mtimespec = (long)st.st_mtime;
     (*dir)->next = new_dir;
 }
 
@@ -94,10 +96,8 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
     struct stat     statbuf;
     int             i;
     t_dir           *first;
-    int             blocks;
 
     i = 0;
-    blocks = 0;
     if ((dirp = opendir(dir)) == NULL)
         return NULL;
     first = (t_dir *)malloc(sizeof(t_dir));
@@ -107,8 +107,6 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
-            blocks += (int)statbuf.st_blocks;
-
             add_dir(&directory, dp->d_name, statbuf, options);
             first = i == 0 ? directory : first;
             directory = directory->next;

@@ -27,6 +27,7 @@ typedef struct      s_dir {
     int             st_size;
     int             blocks;
     char            *time;
+    long            st_mtimespec;
     struct s_dir    *next;
 }                   t_dir;
 
@@ -39,6 +40,7 @@ int                 sort_strcmp(void *s1_, void *s2_, int reverse);
 void                ft_arr_swap(void *arr_, int i, int j);
 void                iterative_display_mode(char **dirs, char options[6]);
 t_dir               *sort_list(t_dir *head, int rev);
+t_dir               *sort_list_time(t_dir *head, int rev);
 void                ft_list_swap(t_dir **tmp, t_dir **tmp_next);
 char        		*lower_str(char *s);
 
