@@ -8,6 +8,7 @@ static void ft_list_swap_bis(t_dir **tmp, t_dir **tmp_next)
 {
     void    *buf;
     int     swap;
+    long    nano_sec;
 
     buf = (*tmp)->pw_name;
     (*tmp)->pw_name = (*tmp_next)->pw_name;
@@ -24,13 +25,16 @@ static void ft_list_swap_bis(t_dir **tmp, t_dir **tmp_next)
     swap = (*tmp)->blocks;
     (*tmp)->blocks = (*tmp_next)->blocks;
     (*tmp_next)->blocks = swap;
+    nano_sec = (*tmp)->tv_nsec;
+    (*tmp)->tv_nsec = (*tmp_next)->tv_nsec;
+    (*tmp_next)->tv_nsec = nano_sec;
 }
 
-void        ft_list_swap(t_dir **tmp, t_dir **tmp_next)
+void            ft_list_swap(t_dir **tmp, t_dir **tmp_next)
 {
-    void    *buf;
-    int     swap;
-    long    time;
+    void        *buf;
+    int         swap;
+    long long   time;
 
     buf = (*tmp)->name;
     (*tmp)->name = (*tmp_next)->name;
@@ -47,6 +51,9 @@ void        ft_list_swap(t_dir **tmp, t_dir **tmp_next)
     time = (*tmp)->st_mtimespec;
     (*tmp)->st_mtimespec = (*tmp_next)->st_mtimespec;
     (*tmp_next)->st_mtimespec = time;
+    buf = (*tmp)->timestamp;
+    (*tmp)->timestamp = (*tmp_next)->timestamp;
+    (*tmp_next)->timestamp = buf;
 }
 
 t_dir       *sort_list(t_dir *head, int rev)
@@ -84,7 +91,7 @@ t_dir       *sort_list_time(t_dir *head, int rev)
     {
         while (tmp_next != tmp)
         {
-            if (sort_strcmp(tmp_next->name, tmp->name, rev))
+            if (sort_strcmp(tmp_next->timestamp, tmp->timestamp, rev))
             {
                 ft_list_swap(&tmp, &tmp_next);
                 ft_list_swap_bis(&tmp, &tmp_next);

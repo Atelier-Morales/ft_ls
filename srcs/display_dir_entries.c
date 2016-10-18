@@ -4,6 +4,7 @@
 
 #include "../includes/ft_ls.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static int display_total_blocks(t_dir *buf, char options[6])
 {
@@ -70,12 +71,30 @@ static void display_dir(t_dir *dir, char options[6], int max_len)
         ft_putstr(" ");
         display_time(dir->time);
         ft_putstr(" ");
+//        ft_putstr(dir->timestamp);
+//        ft_putstr(" ");
     }
-    ft_putstr(" ");
-    ft_putstr(ft_itoa((int)dir->st_mtimespec));
-    ft_putstr(" ");
     ft_putendl(dir->name);
+}
 
+void        set_sorting_rules(t_dir **directory, char options[6])
+{
+    if (ft_strchr(options, 'r') == NULL \
+        && ft_strchr(options, 't') == NULL \
+        && (*directory)->next != NULL)
+        sort_list(*directory, 1);
+    else if (ft_strchr(options, 'r') != NULL \
+        && ft_strchr(options, 't') == NULL \
+        && (*directory)->next != NULL)
+        sort_list(*directory, 0);
+    else if (ft_strchr(options, 'r') == NULL \
+        && ft_strchr(options, 't') != NULL \
+        && (*directory)->next != NULL)
+        sort_list_time(*directory, 0);
+    else if (ft_strchr(options, 'r') != NULL \
+        && ft_strchr(options, 't') != NULL \
+        && (*directory)->next != NULL)
+        sort_list_time(*directory, 1);
 }
 
 void        display_dir_entries(char *dir, char options[6])
@@ -91,10 +110,7 @@ void        display_dir_entries(char *dir, char options[6])
     directory = set_directory_structure(dir, buf, options);
     if (directory == NULL)
         return ;
-    if (ft_strchr(options, 'r') == NULL && directory->next != NULL)
-        sort_list(directory, 1);
-    else if (directory->next != NULL)
-        sort_list(directory, 0);
+    set_sorting_rules(&directory, options);
     buf = directory;
     max_size_len = display_total_blocks(buf, options);
     while (directory->next != NULL)
