@@ -12,7 +12,8 @@
 #include <locale.h>
 #include <langinfo.h>
 #include <stdint.h>
-#include <sys/timespec.h>
+//#include <sys/timespec.h> //remove if OSX
+#include <mach/mach.h> // remove if LINUX
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -102,10 +103,10 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     (*dir)->st_size = long_format != NULL ? (int)st.st_size : 0;
     (*dir)->time = long_format != NULL ? set_time(st): NULL;
     (*dir)->blocks = long_format != NULL ? (int)st.st_blocks : 0;
-    (*dir)->st_mtimespec = (long long)st.st_mtim.tv_sec;
-    (*dir)->tv_nsec = st.st_mtim.tv_nsec;
-    sec = ft_strjoin(ft_itoa(st.st_mtim.tv_sec), ".");
-    n_sec = get_nano_seconds(st.st_mtim.tv_nsec);
+    (*dir)->st_mtimespec = (long long)st.st_mtimespec.tv_sec;
+    (*dir)->tv_nsec = st.st_mtimespec.tv_nsec;
+    sec = ft_strjoin(ft_itoa(st.st_mtimespec.tv_sec), ".");
+    n_sec = get_nano_seconds(st.st_mtimespec.tv_nsec);
     (*dir)->timestamp = ft_strjoin(sec, n_sec);
     (*dir)->next = new_dir;
 }

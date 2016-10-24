@@ -26,6 +26,22 @@ static int display_total_blocks(t_dir *buf, char options[6])
     return (max_len);
 }
 
+static int get_links_len(t_dir *buf, char options[6])
+{
+    int max_len;
+
+    max_len = 0;
+    if (ft_strchr(options, 'l') == NULL)
+        return (0);
+    while (buf->next != NULL)
+    {
+        if ((int)ft_strlen(ft_itoa(buf->st_nlink)) > max_len)
+            max_len = (int)ft_strlen(ft_itoa(buf->st_nlink));
+        buf = buf->next;
+    }
+    return (max_len);
+}
+
 static void display_time(char *datestring)
 {
     char    **splitted;
@@ -45,7 +61,49 @@ static void display_time(char *datestring)
     ft_putstr(ft_strsub(splitted[3], 0, 5));
 }
 
-static void display_dir(t_dir *dir, char options[6], int max_len)
+static void display_time_OSX(char *datestring)
+{
+    char    **splitted;
+
+    splitted = ft_strsplit(datestring, ' ');
+    ft_putstr(splitted[1]);
+    ft_putstr(" ");
+    ft_putstr(splitted[2]);
+    ft_putstr(" ");
+    ft_putstr(ft_strsub(splitted[3], 0, 5));
+}
+
+static void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_links)
+{
+    char            *long_format;
+    int             i;
+
+    i = -1;
+    long_format = ft_strchr(options, 'l');
+    if (long_format != NULL)
+    {
+        ft_putstr(dir->perms);
+        ft_putstr("  ");
+        while (++i < (max_links - (int)ft_strlen(ft_itoa(dir->st_nlink))))
+            ft_putstr(" ");
+        i = -1;
+        ft_putnbr(dir->st_nlink);
+        ft_putstr(" ");
+        ft_putstr(dir->pw_name);
+        ft_putstr("  ");
+        ft_putstr(dir->gr_name);
+        ft_putstr("  ");
+        while (++i < (max_len - (int)ft_strlen(ft_itoa(dir->st_size))))
+            ft_putstr(" ");
+        ft_putstr(ft_itoa(dir->st_size));
+        ft_putstr(" ");
+        display_time_OSX(dir->time);
+        ft_putstr(" ");
+    }
+    ft_putendl(dir->name);
+}
+
+static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
 {
     char            *long_format;
     int             i;
@@ -59,6 +117,9 @@ static void display_dir(t_dir *dir, char options[6], int max_len)
             ft_putstr("+ ");
         else
             ft_putstr(" ");
+        while (++i < (max_links - (int)ft_strlen(ft_itoa(dir->st_nlink))))
+            ft_putstr(" ");
+        i = -1;
         ft_putnbr(dir->st_nlink);
         ft_putstr(" ");
         ft_putstr(dir->pw_name);
@@ -69,10 +130,11 @@ static void display_dir(t_dir *dir, char options[6], int max_len)
             ft_putstr(" ");
         ft_putstr(ft_itoa(dir->st_size));
         ft_putstr(" ");
-        display_time(dir->time);
+        if (OS_MODE == 0)
+            display_time(dir->time);
+        else if (OS_MODE == 1)
+            display_time_OSX(dir->time);
         ft_putstr(" ");
-//        ft_putstr(dir->timestamp);
-//        ft_putstr(" ");
     }
     ft_putendl(dir->name);
 }
@@ -102,6 +164,7 @@ void        display_dir_entries(char *dir, char options[6])
     t_dir   *directory;
     t_dir   *buf;
     int     max_size_len;
+    int     max_links;
 
     directory = (t_dir *)malloc(sizeof(t_dir));
     directory->name = NULL;
@@ -113,9 +176,13 @@ void        display_dir_entries(char *dir, char options[6])
     set_sorting_rules(&directory, options);
     buf = directory;
     max_size_len = display_total_blocks(buf, options);
+    max_links = get_links_len(buf, options);
     while (directory->next != NULL)
     {
-        display_dir(directory, options, max_size_len);
+        if (OS_MODE == 0)
+            display_dir(directory, options, max_size_len, max_links);
+        else if (OS_MODE == 1)
+            display_dir_OSX(directory, options, max_size_len, max_links);
         directory = directory->next;
     }
 }
