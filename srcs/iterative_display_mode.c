@@ -45,14 +45,15 @@ static int  check_dir(char *dir)
     return (ret);
 }
 
-void    iterative_display_mode(char **dirs,char options[6]) {
+void    iterative_display_mode(char **dirs,char options[6])
+{
     int i;
 
     i = 0;
-    if (ft_strchr(options, 'r') == NULL)
-        ft_arr_sort(dirs, sort_strcmp, 0);
+    if (ft_strchr(options, 't') == NULL)
+        ft_arr_sort(dirs, sort_strcmp, options);
     else
-        ft_arr_sort(dirs, sort_strcmp, 1);
+        ft_arr_sort(dirs, sort_dir_time, options);
     display_dir_errors(dirs);
     while (i < ft_tabcount(dirs) && check_dir(dirs[i]) != 0)
     {

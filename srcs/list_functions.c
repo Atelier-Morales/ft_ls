@@ -91,7 +91,7 @@ t_dir       *sort_list_time(t_dir *head, int rev)
     {
         while (tmp_next != tmp)
         {
-            if (sort_strcmp(tmp_next->timestamp, tmp->timestamp, rev))
+            if (sort_time(tmp_next, tmp, rev))
             {
                 ft_list_swap(&tmp, &tmp_next);
                 ft_list_swap_bis(&tmp, &tmp_next);

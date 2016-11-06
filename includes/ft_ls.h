@@ -37,7 +37,7 @@ void                display_dir_entries(char *dir, char options[6]);
 int                 sanitize_standard_input(char **av, int ac, char options[6]);
 int                 check_errors(char option[5], char **av);
 t_dir               *set_directory_structure(char *dir, t_dir *directory, char options[6]);
-void                ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int rev), int reverse);
+void                ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int rev), char options[6]);
 int                 sort_strcmp(void *s1_, void *s2_, int reverse);
 void                ft_arr_swap(void *arr_, int i, int j);
 void                iterative_display_mode(char **dirs, char options[6]);
@@ -45,7 +45,10 @@ t_dir               *sort_list(t_dir *head, int rev);
 t_dir               *sort_list_time(t_dir *head, int rev);
 void                ft_list_swap(t_dir **tmp, t_dir **tmp_next);
 char        		*lower_str(char *s);
-int                 sort_time(long t1, long t2, int reverse);
+int                 sort_time(t_dir *tmp_next, t_dir *tmp, int reverse);
+int                 sort_dir_time(void *s1_, void *s2_, int reverse);
 void                set_sorting_rules(t_dir **directory, char options[6]);
+char                *get_timestamp(char *dir);
+char                *get_nano_seconds(long int tv_nsec);
 
 #endif

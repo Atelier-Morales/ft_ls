@@ -68,6 +68,8 @@ static void display_time_OSX(char *datestring)
     splitted = ft_strsplit(datestring, ' ');
     ft_putstr(splitted[1]);
     ft_putstr(" ");
+    if (ft_strlen(splitted[2]) == 1)
+        ft_putstr(" ");
     ft_putstr(splitted[2]);
     ft_putstr(" ");
     ft_putstr(ft_strsub(splitted[3], 0, 5));
@@ -99,6 +101,8 @@ static void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_li
         ft_putstr(" ");
         display_time_OSX(dir->time);
         ft_putstr(" ");
+//        ft_putstr(dir->timestamp);
+//        ft_putstr(" ");
     }
     ft_putendl(dir->name);
 }
