@@ -99,7 +99,18 @@ static char         *get_lnk(struct stat st, char *perms, char *name)
     link_name = ft_strnew(buff_size);
     i = readlink(name, link_name, buff_size);
     link_name[i] = '\0';
+
     return (link_name);
+}
+
+static char         *get_name(char *dir)
+{
+	int             len;
+	char            **split;
+
+	split = ft_strsplit(dir, '/');
+	len = ft_tabcount(split);
+	return (split[len - 1]);
 }
 
 static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
@@ -110,7 +121,7 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     char            *n_sec;
 
     new_dir = (t_dir *)malloc(sizeof(t_dir));
-    (*dir)->name = ft_strdup(n);
+    (*dir)->name = get_name(n);
     long_format = ft_strchr(opt, 'l');
     (*dir)->st_mode = long_format != NULL ? st.st_mode : 0;
     (*dir)->perms = long_format != NULL ? ft_strdup(set_dir_perms(st)) : NULL;
@@ -125,35 +136,35 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     sec = ft_strjoin(ft_itoa(st.st_mtimespec.tv_sec), ".");
     n_sec = get_nano_seconds(st.st_mtimespec.tv_nsec);
     (*dir)->timestamp = ft_strjoin(sec, n_sec);
-    (*dir)->linkname = long_format != NULL ? ft_strdup(get_lnk(st, (*dir)->perms, (*dir)->name)) : NULL;
+    (*dir)->linkname = long_format != NULL ? ft_strdup(get_lnk(st, (*dir)->perms, n)) : NULL;
     (*dir)->next = new_dir;
+    (*dir) = (*dir)->next;
 }
 
-t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[6])
+t_dir        *set_dir(char *dir, t_dir *dr, char opt[6], struct stat st)
 {
     DIR             *dirp;
     struct dirent   *dp;
-    struct stat     statbuf;
     int             i;
-    t_dir           *first;
+    t_dir           *ft;
+    char            *elem;
 
     i = 0;
-    if ((dirp = opendir(dir)) == NULL)
+    if ((dirp = opendir(dir)) == NULL && (ft = (t_dir *)malloc(sizeof(t_dir))))
         return NULL;
-    first = (t_dir *)malloc(sizeof(t_dir));
     while ((dp = readdir(dirp)) != NULL)
     {
-        lstat(ft_strjoin(ft_strjoin(dir, "/"), dp->d_name), &statbuf);
-        if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
+	    elem = ft_strjoin(ft_strjoin(dir, "/"), dp->d_name);
+        lstat(elem, &st);
+        if ((ft_strchr(opt, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {
-            add_dir(&directory, dp->d_name, statbuf, options);
-            first = i == 0 ? directory : first;
-            directory = directory->next;
+            ft = i == 0 ? dr : ft;
+            add_dir(&dr, elem, st, opt);
             i++;
         }
     }
     closedir(dirp);
-    directory->next = NULL;
-    return first;
+    dr->next = NULL;
+    return ft;
 }

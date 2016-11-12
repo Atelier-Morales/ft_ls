@@ -184,16 +184,18 @@ void        set_sorting_rules(t_dir **directory, char options[6])
 
 void        display_dir_entries(char *dir, char options[6])
 {
-    t_dir   *directory;
-    t_dir   *buf;
-    int     max_size_len;
-    int     max_links;
+    struct stat *st;
+    t_dir       *directory;
+    t_dir       *buf;
+    int         max_size_len;
+    int         max_links;
 
     directory = (t_dir *)malloc(sizeof(t_dir));
     directory->name = NULL;
     directory->next = NULL;
     buf = directory;
-    directory = set_directory_structure(dir, buf, options);
+    st = (struct stat*)malloc(sizeof(struct stat));
+    directory = set_dir(dir, buf, options, *st);
     if (directory == NULL)
         return ;
     set_sorting_rules(&directory, options);
@@ -204,8 +206,7 @@ void        display_dir_entries(char *dir, char options[6])
     {
         if (OS_MODE == 0)
             display_dir(directory, options, max_size_len, max_links);
-        else if (OS_MODE == 1)
-            display_dir_OSX(directory, options, max_size_len, max_links);
+        display_dir_OSX(directory, options, max_size_len, max_links);
         directory = directory->next;
     }
 }

@@ -37,7 +37,7 @@ typedef struct      s_dir {
 void                display_dir_entries(char *dir, char options[6]);
 int                 sanitize_standard_input(char **av, int ac, char options[6]);
 int                 check_errors(char option[5], char **av);
-t_dir               *set_directory_structure(char *dir, t_dir *directory, char options[6]);
+t_dir               *set_dir(char *dir, t_dir *dr, char options[6], struct stat st);
 void                ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int rev), char options[6]);
 int                 sort_strcmp(void *s1_, void *s2_, int reverse);
 void                ft_arr_swap(void *arr_, int i, int j);
