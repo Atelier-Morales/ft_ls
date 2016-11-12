@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <pwd.h>
+#include <limits.h>
 #include <grp.h>
 #include <time.h>
 #include <locale.h>
@@ -16,6 +17,7 @@
 #include <mach/mach.h> // remove if LINUX
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static char         *set_pw_name(struct stat st)
 {
@@ -57,7 +59,7 @@ static char         *set_dir_perms(struct stat st)
     char            *perms;
 
     perms = ft_strdup("----------");
-    perms[0] = S_ISDIR(st.st_mode) ? 'd' : '-';
+    perms[0] = S_ISDIR(st.st_mode) ? 'd' : (st.st_mode & S_IFMT) == S_IFLNK ? 'l' : '-';
     perms[1] = st.st_mode & S_IRUSR ? 'r' : '-';
     perms[2] = st.st_mode & S_IWUSR ? 'w' : '-';
     perms[3] = st.st_mode & S_IXUSR ? 'x' : '-';
@@ -85,6 +87,21 @@ char                *get_nano_seconds(long int tv_nsec)
     return secs;
 }
 
+static char         *get_lnk(struct stat st, char *perms, char *name)
+{
+    char            *link_name;
+    size_t         buff_size;
+    size_t         i;
+
+    if (perms[0] != 'l')
+        return NULL;
+    buff_size = st.st_size == 0 ? PATH_MAX : st.st_size + 1;
+    link_name = ft_strnew(buff_size);
+    i = readlink(name, link_name, buff_size);
+    link_name[i] = '\0';
+    return (link_name);
+}
+
 static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
 {
     t_dir           *new_dir;
@@ -108,6 +125,7 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     sec = ft_strjoin(ft_itoa(st.st_mtimespec.tv_sec), ".");
     n_sec = get_nano_seconds(st.st_mtimespec.tv_nsec);
     (*dir)->timestamp = ft_strjoin(sec, n_sec);
+    (*dir)->linkname = long_format != NULL ? ft_strdup(get_lnk(st, (*dir)->perms, (*dir)->name)) : NULL;
     (*dir)->next = new_dir;
 }
 
@@ -125,7 +143,7 @@ t_dir        *set_directory_structure(char *dir, t_dir *directory, char options[
     first = (t_dir *)malloc(sizeof(t_dir));
     while ((dp = readdir(dirp)) != NULL)
     {
-        stat(ft_strjoin(ft_strjoin(dir, "/"), dp->d_name), &statbuf);
+        lstat(ft_strjoin(ft_strjoin(dir, "/"), dp->d_name), &statbuf);
         if ((ft_strchr(options, 'a') != NULL && dp->d_name[0] == '.')
             || dp->d_name[0] != '.')
         {

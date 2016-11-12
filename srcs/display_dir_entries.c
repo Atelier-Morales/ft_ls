@@ -3,6 +3,12 @@
 //
 
 #include "../includes/ft_ls.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -40,6 +46,17 @@ static int get_links_len(t_dir *buf, char options[6])
         buf = buf->next;
     }
     return (max_len);
+}
+
+static void print_symlink(char *linkname)
+{
+    if (linkname == NULL)
+    {
+        ft_putstr("\n");
+        return ;
+    }
+    ft_putstr(" -> ");
+    ft_putendl(linkname);
 }
 
 static void display_time(char *datestring)
@@ -104,7 +121,8 @@ static void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_li
 //        ft_putstr(dir->timestamp);
 //        ft_putstr(" ");
     }
-    ft_putendl(dir->name);
+    ft_putstr(dir->name);
+    print_symlink(dir->linkname);
 }
 
 static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
@@ -140,7 +158,8 @@ static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
             display_time_OSX(dir->time);
         ft_putstr(" ");
     }
-    ft_putendl(dir->name);
+    ft_putstr(dir->name);
+    print_symlink(dir->linkname);
 }
 
 void        set_sorting_rules(t_dir **directory, char options[6])

@@ -30,6 +30,7 @@ typedef struct      s_dir {
     long long       st_mtimespec;
     long            tv_nsec;
     char            *timestamp;
+    char            *linkname;
     struct s_dir    *next;
 }                   t_dir;
 

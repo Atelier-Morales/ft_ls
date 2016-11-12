@@ -3,6 +3,7 @@
 //
 
 #include "../includes/ft_ls.h"
+#include <stdlib.h>
 
 static void ft_list_swap_bis(t_dir **tmp, t_dir **tmp_next)
 {
@@ -28,6 +29,9 @@ static void ft_list_swap_bis(t_dir **tmp, t_dir **tmp_next)
     nano_sec = (*tmp)->tv_nsec;
     (*tmp)->tv_nsec = (*tmp_next)->tv_nsec;
     (*tmp_next)->tv_nsec = nano_sec;
+    buf = (*tmp)->linkname;
+    (*tmp)->linkname = (*tmp_next)->linkname;
+    (*tmp_next)->linkname = buf;
 }
 
 void            ft_list_swap(t_dir **tmp, t_dir **tmp_next)

@@ -383,6 +383,19 @@ int main(void)
     system("diff test/org.txt test/dest.txt > test/diff");
     assert(countlines("test/diff") <= 1);
 
+    // test ls -t -a -l with multiple folders
+    printf("[TEST] : ls -t -a -l with multiple folders\n");
+    system("ls -t -a -l includes srcs libft > test/org.txt");
+    system("./ft_ls -t -a -l includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
+
+    // test ls -tal with multiple folders
+    printf("[TEST] : ls -tal with multiple folders\n");
+    system("ls -tal includes srcs libft > test/org.txt");
+    system("./ft_ls -tal includes srcs libft > test/dest.txt");
+    system("diff test/org.txt test/dest.txt > test/diff");
+    assert(countlines("test/diff") <= 1);
 
     // test ls -artl with multiple folders
     printf("[TEST] : ls -artl with multiple folders\n");
