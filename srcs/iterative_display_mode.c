@@ -3,17 +3,8 @@
 //
 
 #include "../includes/ft_ls.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <pwd.h>
-#include <grp.h>
-#include <time.h>
-#include <locale.h>
-#include <langinfo.h>
-#include <stdint.h>
 
-static void display_dir_errors(char **dirs)
+void display_dir_errors(char **dirs)
 {
     struct stat path_stat;
     char    *buf;
@@ -33,7 +24,7 @@ static void display_dir_errors(char **dirs)
     }
 }
 
-static int  check_dir(char *dir)
+int  check_dir(char *dir)
 {
     struct stat path_stat;
     int     ret;

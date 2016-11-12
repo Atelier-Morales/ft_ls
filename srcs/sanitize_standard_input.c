@@ -19,5 +19,7 @@ int sanitize_standard_input(char **av, int ac, char options[6])
         else
             iterative_display_mode(dirs, options);
     }
+    else
+	    recursive_display_mode(dirs, options);
     return (1);
 }

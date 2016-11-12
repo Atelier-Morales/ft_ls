@@ -17,6 +17,7 @@ SRC = 	main.c \
         set_directory_structure.c \
         array_functions.c \
         iterative_display_mode.c \
+        recursive_display_mode.c \
         list_functions.c
 
 DIR = srcs/

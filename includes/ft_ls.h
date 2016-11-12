@@ -7,6 +7,13 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <dirent.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
+# include <locale.h>
+# include <langinfo.h>
+# include <stdint.h>
+# include <stdio.h>
 
 #define OS_MODE 1
 
@@ -42,6 +49,7 @@ void                ft_arr_sort(void *arr_, int (*cmp_fn)(void *a, void *b, int 
 int                 sort_strcmp(void *s1_, void *s2_, int reverse);
 void                ft_arr_swap(void *arr_, int i, int j);
 void                iterative_display_mode(char **dirs, char options[6]);
+void                recursive_display_mode(char **dirs, char options[6]);
 t_dir               *sort_list(t_dir *head, int rev);
 t_dir               *sort_list_time(t_dir *head, int rev);
 void                ft_list_swap(t_dir **tmp, t_dir **tmp_next);
@@ -51,5 +59,7 @@ int                 sort_dir_time(void *s1_, void *s2_, int reverse);
 void                set_sorting_rules(t_dir **directory, char options[6]);
 char                *get_timestamp(char *dir);
 char                *get_nano_seconds(long int tv_nsec);
+int                 check_dir(char *dir);
+void                display_dir_errors(char **dirs);
 
 #endif
