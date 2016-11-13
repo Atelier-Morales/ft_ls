@@ -3,8 +3,6 @@
 //
 
 #include "../includes/ft_ls.h"
-#include <sys/types.h>
-#include <sys/stat.h>
 
 char        *lower_str(char *s)
 {

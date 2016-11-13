@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static int display_total_blocks(t_dir *buf, char options[6])
+int display_total_blocks(t_dir *buf, char options[6])
 {
     int blocks;
     int max_len;
@@ -32,7 +32,7 @@ static int display_total_blocks(t_dir *buf, char options[6])
     return (max_len);
 }
 
-static int get_links_len(t_dir *buf, char options[6])
+int get_links_len(t_dir *buf, char options[6])
 {
     int max_len;
 
@@ -52,31 +52,30 @@ static void print_symlink(char *linkname)
 {
     if (linkname == NULL)
     {
-        ft_putstr("\n");
         return ;
     }
     ft_putstr(" -> ");
-    ft_putendl(linkname);
+    ft_putstr(linkname);
 }
 
-static void display_time(char *datestring)
-{
-    char    **splitted;
-
-    splitted = ft_strsplit(datestring, ' ');
-    ft_putstr(splitted[2]);
-    ft_putstr(" ");
-    ft_putstr(lower_str(splitted[1]));
-    if (ft_strcmp(splitted[1], "juin") == 0|| \
-        ft_strcmp(splitted[1], "aout") == 0 || \
-        ft_strcmp(splitted[1], "mars") == 0)
-        ft_putstr("  ");
-    else if (ft_strcmp(splitted[1], "mai") == 0)
-        ft_putstr("   ");
-    else
-        ft_putstr(".  ");
-    ft_putstr(ft_strsub(splitted[3], 0, 5));
-}
+//static void display_time(char *datestring)
+//{
+//    char    **splitted;
+//
+//    splitted = ft_strsplit(datestring, ' ');
+//    ft_putstr(splitted[2]);
+//    ft_putstr(" ");
+//    ft_putstr(lower_str(splitted[1]));
+//    if (ft_strcmp(splitted[1], "juin") == 0|| \
+//        ft_strcmp(splitted[1], "aout") == 0 || \
+//        ft_strcmp(splitted[1], "mars") == 0)
+//        ft_putstr("  ");
+//    else if (ft_strcmp(splitted[1], "mai") == 0)
+//        ft_putstr("   ");
+//    else
+//        ft_putstr(".  ");
+//    ft_putstr(ft_strsub(splitted[3], 0, 5));
+//}
 
 static void display_time_OSX(char *datestring)
 {
@@ -92,7 +91,7 @@ static void display_time_OSX(char *datestring)
     ft_putstr(ft_strsub(splitted[3], 0, 5));
 }
 
-static void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_links)
+void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_links)
 {
     char            *long_format;
     int             i;
@@ -125,42 +124,42 @@ static void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_li
     print_symlink(dir->linkname);
 }
 
-static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
-{
-    char            *long_format;
-    int             i;
-
-    i = -1;
-    long_format = ft_strchr(options, 'l');
-    if (long_format != NULL)
-    {
-        ft_putstr(dir->perms);
-        if (OS_MODE == 0)
-            ft_putstr("+ ");
-        else
-            ft_putstr(" ");
-        while (++i < (max_links - (int)ft_strlen(ft_itoa(dir->st_nlink))))
-            ft_putstr(" ");
-        i = -1;
-        ft_putnbr(dir->st_nlink);
-        ft_putstr(" ");
-        ft_putstr(dir->pw_name);
-        ft_putstr(" ");
-        ft_putstr(dir->gr_name);
-        ft_putstr(" ");
-        while (++i < (max_len - (int)ft_strlen(ft_itoa(dir->st_size))))
-            ft_putstr(" ");
-        ft_putstr(ft_itoa(dir->st_size));
-        ft_putstr(" ");
-        if (OS_MODE == 0)
-            display_time(dir->time);
-        else if (OS_MODE == 1)
-            display_time_OSX(dir->time);
-        ft_putstr(" ");
-    }
-    ft_putstr(dir->name);
-    print_symlink(dir->linkname);
-}
+//static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
+//{
+//    char            *long_format;
+//    int             i;
+//
+//    i = -1;
+//    long_format = ft_strchr(options, 'l');
+//    if (long_format != NULL)
+//    {
+//        ft_putstr(dir->perms);
+//        if (OS_MODE == 0)
+//            ft_putstr("+ ");
+//        else
+//            ft_putstr(" ");
+//        while (++i < (max_links - (int)ft_strlen(ft_itoa(dir->st_nlink))))
+//            ft_putstr(" ");
+//        i = -1;
+//        ft_putnbr(dir->st_nlink);
+//        ft_putstr(" ");
+//        ft_putstr(dir->pw_name);
+//        ft_putstr(" ");
+//        ft_putstr(dir->gr_name);
+//        ft_putstr(" ");
+//        while (++i < (max_len - (int)ft_strlen(ft_itoa(dir->st_size))))
+//            ft_putstr(" ");
+//        ft_putstr(ft_itoa(dir->st_size));
+//        ft_putstr(" ");
+//        if (OS_MODE == 0)
+//            display_time(dir->time);
+//        else if (OS_MODE == 1)
+//            display_time_OSX(dir->time);
+//        ft_putstr(" ");
+//    }
+//    ft_putstr(dir->name);
+//    print_symlink(dir->linkname);
+//}
 
 void        set_sorting_rules(t_dir **directory, char options[6])
 {
@@ -182,7 +181,39 @@ void        set_sorting_rules(t_dir **directory, char options[6])
         sort_list_time(*directory, 1);
 }
 
-void        display_dir_entries(char *dir, char options[6])
+char                **get_dirs(t_dir *dir, char *root)
+{
+    t_dir           *buf;
+    char            **subs;
+    int             len;
+	int             i;
+
+    buf = (t_dir *)malloc(sizeof(t_dir));
+    buf = dir;
+    len = 0;
+	i = 0;
+    while (buf->next != NULL)
+    {
+        if (buf->perms[0] == 'd' && ft_strcmp(buf->name, ".") != 0 && ft_strcmp("..", buf->name) != 0)
+            ++len;
+        buf = buf->next;
+    }
+    buf = dir;
+    subs = (char **)malloc(sizeof(char *) * (len + 1));
+    while (buf->next != NULL)
+    {
+        if (buf->perms[0] == 'd' && ft_strcmp(buf->name, ".") != 0 && ft_strcmp("..", buf->name) != 0)
+        {
+	        subs[i] = ft_strjoin(root, buf->name);
+	        ++i;
+        }
+        buf = buf->next;
+    }
+	subs[i] = "\0";
+    return subs;
+}
+
+void            display_dir_entries(char *dir, char options[6])
 {
     struct stat *st;
     t_dir       *directory;
@@ -191,8 +222,6 @@ void        display_dir_entries(char *dir, char options[6])
     int         max_links;
 
     directory = (t_dir *)malloc(sizeof(t_dir));
-    directory->name = NULL;
-    directory->next = NULL;
     buf = directory;
     st = (struct stat*)malloc(sizeof(struct stat));
     directory = set_dir(dir, buf, options, *st);
@@ -204,9 +233,8 @@ void        display_dir_entries(char *dir, char options[6])
     max_links = get_links_len(buf, options);
     while (directory->next != NULL)
     {
-        if (OS_MODE == 0)
-            display_dir(directory, options, max_size_len, max_links);
         display_dir_OSX(directory, options, max_size_len, max_links);
+	    ft_putchar('\n');
         directory = directory->next;
     }
 }

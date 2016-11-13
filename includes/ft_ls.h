@@ -13,6 +13,7 @@
 # include <locale.h>
 # include <langinfo.h>
 # include <stdint.h>
+# include <stdlib.h>
 # include <stdio.h>
 
 #define OS_MODE 1
@@ -61,5 +62,10 @@ char                *get_timestamp(char *dir);
 char                *get_nano_seconds(long int tv_nsec);
 int                 check_dir(char *dir);
 void                display_dir_errors(char **dirs);
+void                display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_links);
+t_dir               *rec_entries(char *dir, char options[6]);
+char                **get_dirs(t_dir *dir, char *root);
+int                 display_total_blocks(t_dir *buf, char options[6]);
+int                 get_links_len(t_dir *buf, char options[6]);
 
 #endif

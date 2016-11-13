@@ -124,7 +124,7 @@ static void         add_dir(t_dir **dir, char *n, struct stat st, char opt[6])
     (*dir)->name = get_name(n);
     long_format = ft_strchr(opt, 'l');
     (*dir)->st_mode = long_format != NULL ? st.st_mode : 0;
-    (*dir)->perms = long_format != NULL ? ft_strdup(set_dir_perms(st)) : NULL;
+    (*dir)->perms = ft_strdup(set_dir_perms(st));
     (*dir)->st_nlink = long_format != NULL ? st.st_nlink : 0;
     (*dir)->pw_name = long_format != NULL ? set_pw_name(st) : NULL;
     (*dir)->gr_name = long_format != NULL ? set_gr_name(st) : NULL;
@@ -151,7 +151,7 @@ t_dir        *set_dir(char *dir, t_dir *dr, char opt[6], struct stat st)
 
     i = 0;
     if ((dirp = opendir(dir)) == NULL && (ft = (t_dir *)malloc(sizeof(t_dir))))
-        return NULL;
+	    return NULL;
     while ((dp = readdir(dirp)) != NULL)
     {
 	    elem = ft_strjoin(ft_strjoin(dir, "/"), dp->d_name);
