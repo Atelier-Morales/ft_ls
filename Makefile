@@ -18,7 +18,11 @@ SRC = 	main.c \
         array_functions.c \
         iterative_display_mode.c \
         recursive_display_mode.c \
-        list_functions.c
+        list_functions.c \
+        sort_list.c \
+        display_total_blocks.c \
+        get_links_len.c \
+        get_dirs.c
 
 DIR = srcs/
 LIB = libft/

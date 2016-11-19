@@ -1,81 +1,24 @@
-//
-// Created by Fernan MORALES on 10/8/16.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_dir_entries.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmorales <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/19 19:23:33 by fmorales          #+#    #+#             */
+/*   Updated: 2016/11/19 19:24:04 by fmorales         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-int display_total_blocks(t_dir *buf, char options[6])
-{
-    int blocks;
-    int max_len;
-
-    blocks = 0;
-    max_len = 0;
-    if (ft_strchr(options, 'l') == NULL)
-        return (0);
-    while (buf->next != NULL)
-    {
-        if ((int)ft_strlen(ft_itoa(buf->st_size)) > max_len)
-            max_len = (int)ft_strlen(ft_itoa(buf->st_size));
-        blocks += buf->blocks;
-        buf = buf->next;
-    }
-    ft_putendl(ft_strjoin("total ", ft_itoa(blocks)));
-    return (max_len);
-}
-
-int get_links_len(t_dir *buf, char options[6])
-{
-    int max_len;
-
-    max_len = 0;
-    if (ft_strchr(options, 'l') == NULL)
-        return (0);
-    while (buf->next != NULL)
-    {
-        if ((int)ft_strlen(ft_itoa(buf->st_nlink)) > max_len)
-            max_len = (int)ft_strlen(ft_itoa(buf->st_nlink));
-        buf = buf->next;
-    }
-    return (max_len);
-}
 
 static void print_symlink(char *linkname)
 {
     if (linkname == NULL)
-    {
         return ;
-    }
     ft_putstr(" -> ");
     ft_putstr(linkname);
 }
-
-//static void display_time(char *datestring)
-//{
-//    char    **splitted;
-//
-//    splitted = ft_strsplit(datestring, ' ');
-//    ft_putstr(splitted[2]);
-//    ft_putstr(" ");
-//    ft_putstr(lower_str(splitted[1]));
-//    if (ft_strcmp(splitted[1], "juin") == 0|| \
-//        ft_strcmp(splitted[1], "aout") == 0 || \
-//        ft_strcmp(splitted[1], "mars") == 0)
-//        ft_putstr("  ");
-//    else if (ft_strcmp(splitted[1], "mai") == 0)
-//        ft_putstr("   ");
-//    else
-//        ft_putstr(".  ");
-//    ft_putstr(ft_strsub(splitted[3], 0, 5));
-//}
 
 static void display_time_OSX(char *datestring)
 {
@@ -117,49 +60,10 @@ void display_dir_OSX(t_dir *dir, char options[6], int max_len, int max_links)
         ft_putstr(" ");
         display_time_OSX(dir->time);
         ft_putstr(" ");
-//        ft_putstr(dir->timestamp);
-//        ft_putstr(" ");
     }
     ft_putstr(dir->name);
     print_symlink(dir->linkname);
 }
-
-//static void display_dir(t_dir *dir, char options[6], int max_len, int max_links)
-//{
-//    char            *long_format;
-//    int             i;
-//
-//    i = -1;
-//    long_format = ft_strchr(options, 'l');
-//    if (long_format != NULL)
-//    {
-//        ft_putstr(dir->perms);
-//        if (OS_MODE == 0)
-//            ft_putstr("+ ");
-//        else
-//            ft_putstr(" ");
-//        while (++i < (max_links - (int)ft_strlen(ft_itoa(dir->st_nlink))))
-//            ft_putstr(" ");
-//        i = -1;
-//        ft_putnbr(dir->st_nlink);
-//        ft_putstr(" ");
-//        ft_putstr(dir->pw_name);
-//        ft_putstr(" ");
-//        ft_putstr(dir->gr_name);
-//        ft_putstr(" ");
-//        while (++i < (max_len - (int)ft_strlen(ft_itoa(dir->st_size))))
-//            ft_putstr(" ");
-//        ft_putstr(ft_itoa(dir->st_size));
-//        ft_putstr(" ");
-//        if (OS_MODE == 0)
-//            display_time(dir->time);
-//        else if (OS_MODE == 1)
-//            display_time_OSX(dir->time);
-//        ft_putstr(" ");
-//    }
-//    ft_putstr(dir->name);
-//    print_symlink(dir->linkname);
-//}
 
 void        set_sorting_rules(t_dir **directory, char options[6])
 {
@@ -179,38 +83,6 @@ void        set_sorting_rules(t_dir **directory, char options[6])
         && ft_strchr(options, 't') != NULL \
         && (*directory)->next != NULL)
         sort_list_time(*directory, 1);
-}
-
-char                **get_dirs(t_dir *dir, char *root)
-{
-    t_dir           *buf;
-    char            **subs;
-    int             len;
-	int             i;
-
-    buf = (t_dir *)malloc(sizeof(t_dir));
-    buf = dir;
-    len = 0;
-	i = 0;
-    while (buf->next != NULL)
-    {
-        if (buf->perms[0] == 'd' && ft_strcmp(buf->name, ".") != 0 && ft_strcmp("..", buf->name) != 0)
-            ++len;
-        buf = buf->next;
-    }
-    buf = dir;
-    subs = (char **)malloc(sizeof(char *) * (len + 1));
-    while (buf->next != NULL)
-    {
-        if (buf->perms[0] == 'd' && ft_strcmp(buf->name, ".") != 0 && ft_strcmp("..", buf->name) != 0)
-        {
-	        subs[i] = ft_strjoin(root, buf->name);
-	        ++i;
-        }
-        buf = buf->next;
-    }
-	subs[i] = "\0";
-    return subs;
 }
 
 void            display_dir_entries(char *dir, char options[6])
