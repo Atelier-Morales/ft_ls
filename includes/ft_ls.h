@@ -70,5 +70,9 @@ t_dir               *rec_entries(char *dir, char options[6]);
 char                **get_dirs(t_dir *dir, char *root);
 int                 display_total_blocks(t_dir *buf, char options[6]);
 int                 get_links_len(t_dir *buf, char options[6]);
+char                *set_dir_perms(struct stat st);
+char                *set_pw_name(struct stat st);
+char                *set_time(struct stat st);
+char                *set_gr_name(struct stat st);
 
 #endif

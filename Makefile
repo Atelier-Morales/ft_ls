@@ -22,7 +22,8 @@ SRC = 	main.c \
         sort_list.c \
         display_total_blocks.c \
         get_links_len.c \
-        get_dirs.c
+        get_dirs.c \
+        get_entry_infos.c
 
 DIR = srcs/
 LIB = libft/

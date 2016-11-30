@@ -5,3 +5,4 @@ check_errors.c
 get_links_len.c
 display_total_blocks.c
 get_dirs.c
+get_entry_infos.c
