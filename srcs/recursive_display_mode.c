@@ -1,51 +1,58 @@
-//
-// Created by Fernan MORALES on 11/12/16.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   recursive_display_mode.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmorales <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/03 14:26:35 by fmorales          #+#    #+#             */
+/*   Updated: 2016/12/03 14:28:54 by fmorales         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-static void     print_access_error(char *dir)
+static void		print_access_error(char *dir)
 {
-	char        *error;
+	char		*error;
 
 	error = ft_strjoin("ls: ", ft_strjoin(dir, ": Permission denied\n"));
 	ft_putstr_fd(error, 1);
 }
 
-t_dir           *rec_entries(char *dir, char options[6])
+t_dir			*rec_entries(char *dir, char options[6])
 {
-	struct stat *st;
-	t_dir       *directory;
-	t_dir       *buf;
-	int         max_size_len;
-	int         max_links;
+	struct stat	*st;
+	t_dir		*directory;
+	t_dir		*buf;
+	int			max_size_len;
+	int			max_links;
 
 	directory = (t_dir *)malloc(sizeof(t_dir));
 	buf = directory;
 	st = (struct stat*)malloc(sizeof(struct stat));
 	directory = set_dir(dir, buf, options, *st);
 	if (directory == NULL)
-		return NULL;
+		return (NULL);
 	set_sorting_rules(&directory, options);
 	buf = directory;
 	max_size_len = display_total_blocks(buf, options);
 	max_links = get_links_len(buf, options);
 	while (directory->next != NULL)
 	{
-		display_dir_OSX(directory, options, max_size_len, max_links);
+		display_dir_osx(directory, options, max_size_len, max_links);
 		ft_putchar('\n');
 		directory = directory->next;
 	}
 	return (buf);
 }
 
-void    recursive_display(char **dir, char options[6], int len)
+void			recursive_display(char **dir, char options[6], int len)
 {
-	t_dir       *subs;
-	int         sublen;
-	char        **sub_dirs;
-	char        *current;
-	static int  flag;
+	t_dir		*subs;
+	int			sublen;
+	char		**sub_dirs;
+	static int	flag;
 
 	sub_dirs = NULL;
 	if (check_dir(*dir) != 0 && ft_strcmp(*dir, "..") != 0)
@@ -57,8 +64,7 @@ void    recursive_display(char **dir, char options[6], int len)
 			ft_putendl(ft_strjoin(*dir, ":"));
 		if ((subs = rec_entries(*dir, options)) && subs != NULL)
 		{
-			current = ft_strjoin(*dir, "/");
-			sub_dirs = get_dirs(subs, current);
+			sub_dirs = get_dirs(subs, ft_strjoin(*dir, "/"));
 			sublen = ft_tabcount(sub_dirs);
 			if (sublen > 0)
 				recursive_display(sub_dirs, options, sublen);
@@ -70,10 +76,10 @@ void    recursive_display(char **dir, char options[6], int len)
 		recursive_display(++dir, options, len);
 }
 
-void        recursive_display_mode(char **dirs, char options[6])
+void			recursive_display_mode(char **dirs, char options[6])
 {
-	int     len;
-	char    *root;
+	int			len;
+	char		*root;
 
 	len = ft_tabcount(dirs);
 	root = ft_strdup(".");

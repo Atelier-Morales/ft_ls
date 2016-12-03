@@ -35,6 +35,7 @@ int main(void)
     printf("\ncreating test directory\n");
     system("mkdir test");
     printf("\nTests with single option : \n");
+
     // test single ls
     printf("[TEST] : single ls\n");
     system("ls > test/org.txt");
@@ -207,10 +208,11 @@ int main(void)
 
 	// test ls -Rl in . folder
 	printf("[TEST] : ls -Rl in . folder\n");
-	system("ls -Rl > test/org.txt");
-	system("./ft_ls -Rl > test/dest.txt");
-	system("diff test/org.txt test/dest.txt > test/diff");
-	assert(countlines("test/diff") <= 1);
+	system("mkdir ../tests");
+	system("ls -Rl > ../tests/org.txt");
+	system("./ft_ls -Rl > ../tests/dest.txt");
+	system("diff test/org.txt ../tests/dest.txt > ../test/diff");
+	assert(countlines("../tests/diff") <= 1);
 
 	// test ls -Rr in . folder
 	printf("[TEST] : ls -Rr in . folder\n");
@@ -427,10 +429,10 @@ int main(void)
 
     // test ls -r -a -t with multiple folders
     printf("[TEST] : ls -r -a -t with multiple folders\n");
-    system("ls -r -a -t test includes srcs libft > test/org.txt");
-    system("./ft_ls -r -a -t test includes srcs libft > test/dest.txt");
-    system("diff test/org.txt test/dest.txt > test/diff");
-    assert(countlines("test/diff") <= 1);
+    system("ls -r -a -t test includes srcs libft > ../tests/org.txt");
+    system("./ft_ls -r -a -t test includes srcs libft > ../tests/dest.txt");
+    system("diff ../tests/org.txt ../tests/dest.txt > ../tests/diff");
+    assert(countlines("../tests/diff") <= 1);
 
     // test ls -t -a -l with multiple folders
     printf("[TEST] : ls -t -a -l with multiple folders\n");
@@ -494,6 +496,13 @@ int main(void)
     system("./ft_ls -r -a -t -l includes srcs libft > test/dest.txt");
     system("diff test/org.txt test/dest.txt > test/diff");
     assert(countlines("test/diff") <= 1);
+
+	// test ls -R -r -a -t -l with multiple folders
+	printf("[TEST] : ls -R -r -a -t -l with multiple folders\n");
+	system("ls -R -r -a -t -l includes srcs libft > ../tests/org.txt");
+	system("./ft_ls -R -r -a -t -l includes srcs libft > ../tests/dest.txt");
+	system("diff ../tests/org.txt ../tests/dest.txt > ../tests/diff");
+	assert(countlines("../tests/diff") <= 1);
 
 //  printf("LINES: %d\n", countlines("test/diff"));
     printf("all tests passed.\n");

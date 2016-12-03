@@ -6,3 +6,12 @@ get_links_len.c
 display_total_blocks.c
 get_dirs.c
 get_entry_infos.c
+set_directory_structure.c
+recursive_display_mode.c
+iterative_display_mode.c
+set_sorting_rules.c
+display_dir_entries.c
+sanitize_standard_input.c
+
+missing:
+list_functions.c
