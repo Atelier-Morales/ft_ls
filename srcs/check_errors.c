@@ -17,7 +17,7 @@ static void		print_option_error(char c)
 	ft_putstr("ls: illegal option -- ");
 	ft_putchar(c);
 	ft_putchar('\n');
-	ft_putstr("usage: ls [-altrR] [file ...]");
+	ft_putendl("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]");
 }
 
 int				check_errors(char option[6], char **av)

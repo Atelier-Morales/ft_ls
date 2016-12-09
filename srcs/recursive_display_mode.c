@@ -6,7 +6,7 @@
 /*   By: fmorales <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/03 14:26:35 by fmorales          #+#    #+#             */
-/*   Updated: 2016/12/03 14:28:54 by fmorales         ###   ########.fr       */
+/*   Updated: 2016/12/09 21:54:24 by fmorales         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,25 @@ t_dir			*rec_entries(char *dir, char options[6])
 	struct stat	*st;
 	t_dir		*directory;
 	t_dir		*buf;
-	int			max_size_len;
-	int			max_links;
+	t_len		*len;
 
 	directory = (t_dir *)malloc(sizeof(t_dir));
 	buf = directory;
 	st = (struct stat*)malloc(sizeof(struct stat));
 	directory = set_dir(dir, buf, options, *st);
+	len = (t_len *)malloc(sizeof(t_len));
 	if (directory == NULL)
 		return (NULL);
 	set_sorting_rules(&directory, options);
 	buf = directory;
-	max_size_len = display_total_blocks(buf, options);
-	max_links = get_links_len(buf, options);
+	get_right_padding(&len, buf, options);
 	while (directory->next != NULL)
 	{
-		display_dir_osx(directory, options, max_size_len, max_links);
+		display_dir_osx(directory, options, len);
 		ft_putchar('\n');
 		directory = directory->next;
 	}
+	free(len);
 	return (buf);
 }
 
