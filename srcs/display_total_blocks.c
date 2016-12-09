@@ -6,7 +6,7 @@
 /*   By: fmorales <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 19:32:18 by fmorales          #+#    #+#             */
-/*   Updated: 2016/12/09 21:53:45 by fmorales         ###   ########.fr       */
+/*   Updated: 2016/12/09 23:03:02 by fmorales         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		get_max_owner_len(t_dir *buf, char options[6])
 	return (max_len);
 }
 
-void    print_void(int len_max, int len_org)
+void	print_void(int len_max, int len_org)
 {
 	int i;
 
