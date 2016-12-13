@@ -71,8 +71,8 @@ int				sort_dir_time(void *s1_, void *s2_, int reverse)
 		return (ft_strcmp(t1, t2) < 0);
 	}
 	if (reverse == 1)
-		return (ft_strcmp(s1, s2) > 0);
-	return (ft_strcmp(s1, s2) < 0);
+		return (ft_strcmp(s1, s2) < 0);
+	return (ft_strcmp(s1, s2) > 0);
 }
 
 void			ft_arr_sort(void *arr_, int (*fn)(void *a, void *b, int rev),\

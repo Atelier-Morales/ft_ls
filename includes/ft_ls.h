@@ -6,7 +6,7 @@
 /*   By: fmorales <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/03 16:52:57 by fmorales          #+#    #+#             */
-/*   Updated: 2016/12/09 21:51:45 by fmorales         ###   ########.fr       */
+/*   Updated: 2016/12/10 13:27:51 by fmorales         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ char				*set_pw_name(struct stat st);
 char				*set_time(struct stat st);
 char				*set_gr_name(struct stat st);
 void				get_right_padding(t_len **len, t_dir *buf, char options[6]);
-void    print_void(int len_max, int len_org);
+void				print_void(int len_max, int len_org);
 
 #endif

@@ -66,7 +66,10 @@ char				*set_dir_perms(struct stat st)
 	perms[6] = st.st_mode & S_IXGRP ? 'x' : '-';
 	perms[7] = st.st_mode & S_IROTH ? 'r' : '-';
 	perms[8] = st.st_mode & S_IWOTH ? 'w' : '-';
-	perms[9] = st.st_mode & S_IXOTH ? 'x' : '-';
+	if (st.st_mode & S_ISVTX)
+		perms[9] = 't';
+	else
+		perms[9] = st.st_mode & S_IXOTH ? 'x' : '-';
 	return (perms);
 }
 

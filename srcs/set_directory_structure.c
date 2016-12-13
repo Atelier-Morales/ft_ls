@@ -88,7 +88,8 @@ t_dir				*set_dir(char *dir, t_dir *dr, char opt[6], struct stat st)
 	char			*elem;
 
 	i = 0;
-	dirp = opendir(dir);
+	if ((dirp = opendir(dir)) == NULL)
+		return (NULL);
 	ft = (t_dir *)malloc(sizeof(t_dir));
 	while ((dp = readdir(dirp)) != NULL)
 	{
